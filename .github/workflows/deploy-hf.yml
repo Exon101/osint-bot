@@ -1,0 +1,156 @@
+# ─────────────────────────────────────────────
+# Auto Deploy to HuggingFace Spaces
+# ─────────────────────────────────────────────
+# Triggers on every push to main branch
+# Builds the HF package and pushes to your Space
+#
+# Required GitHub Secrets:
+#   HF_TOKEN       - HuggingFace access token (https://huggingface.co/settings/tokens)
+#   HF_USERNAME    - Your HuggingFace username
+#   HF_SPACE_NAME  - Space name (default: osint-bot)
+# ─────────────────────────────────────────────
+
+name: Deploy to HuggingFace Spaces
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.gitignore'
+      - 'LICENSE'
+  workflow_dispatch:  # Allow manual trigger
+
+concurrency:
+  group: hf-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install huggingface_hub
+        run: pip install huggingface_hub
+
+      - name: 🏗️ Build HF Space package
+        run: |
+          mkdir -p hf-deploy
+
+          # Copy deployment files
+          cp hf-space/Dockerfile hf-deploy/
+          cp hf-space/README.md hf-deploy/
+          cp requirements.txt hf-deploy/
+          cp config.py hf-deploy/
+          cp database.py hf-deploy/
+          cp main.py hf-deploy/
+          cp webhook_server.py hf-deploy/
+
+          # Copy all Python modules
+          cp -r handlers/ hf-deploy/handlers/
+          cp -r api_clients/ hf-deploy/api_clients/
+          cp -r utils/ hf-deploy/utils/
+          cp -r templates/ hf-deploy/templates/ 2>/dev/null || true
+          cp -r scripts/ hf-deploy/scripts/ 2>/dev/null || true
+
+          # Clean up unnecessary files
+          find hf-deploy -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find hf-deploy -name "*.pyc" -delete 2>/dev/null || true
+          find hf-deploy -name ".DS_Store" -delete 2>/dev/null || true
+
+          # Create .dockerignore
+          cat > hf-deploy/.dockerignore << 'DOCKEREOF'
+          __pycache__/
+          *.py[cod]
+          .env
+          *.db
+          *.sqlite3
+          logs/
+          *.log
+          .git/
+          tests/
+          DOCKEREOF
+
+          # Create .gitignore
+          cat > hf-deploy/.gitignore << 'GITEOF'
+          __pycache__/
+          *.py[cod]
+          .env
+          *.db
+          *.sqlite3
+          logs/
+          *.log
+          .DS_Store
+          GITEOF
+
+          echo "✅ HF package built successfully"
+          echo "Files:"
+          find hf-deploy -type f | wc -l
+          du -sh hf-deploy/
+
+      - name: 🚀 Deploy to HuggingFace Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME || 'osint-bot' }}
+        run: |
+          SPACE_ID="${HF_USERNAME}/${HF_SPACE_NAME}"
+          echo "📤 Deploying to: ${SPACE_ID}"
+
+          python - << 'PYEOF'
+          import os
+          from huggingface_hub import HfApi, create_repo
+
+          token = os.environ["HF_TOKEN"]
+          space_id = os.environ["HF_USERNAME"] + "/" + os.environ["HF_SPACE_NAME"]
+
+          # Create space if it doesn't exist
+          api = HfApi(token=token)
+          try:
+              api.repo_info(repo_id=space_id, repo_type="space")
+              print(f"✅ Space exists: {space_id}")
+          except Exception:
+              print(f"🔧 Creating space: {space_id}")
+              create_repo(
+                  repo_id=space_id,
+                  repo_type="space",
+                  space_sdk="docker",
+                  private=False,
+                  token=token,
+                  exist_ok=True,
+              )
+              print(f"✅ Space created: {space_id}")
+
+          # Upload all files
+          print("📤 Uploading files to Space...")
+          api.upload_folder(
+              folder_path="hf-deploy",
+              repo_id=space_id,
+              repo_type="space",
+              token=token,
+              commit_message=f"Auto deploy from GitHub Actions",
+              delete_patterns=["*"],  # Clean old files first
+          )
+          print("🎉 Deployment complete!")
+          PYEOF
+
+      - name: ✅ Deployment summary
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  HF Spaces Deployment Complete"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "🌐 Space URL: https://huggingface.co/spaces/${{ secrets.HF_USERNAME || '<your-username>' }}/${{ secrets.HF_SPACE_NAME || 'osint-bot' }}"
+          echo ""
+          echo "💡 Check the Space logs at the URL above to verify the bot is running."

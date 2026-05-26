@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Bot - Open Source Intelligence Telegram Bot</title>
+    <meta name="description" content="A comprehensive Open Source Intelligence (OSINT) aggregation bot for Telegram with 30+ powerful modules for investigations, recon, and security research.">
+    <meta name="keywords" content="OSINT, Telegram bot, cybersecurity, intelligence, reconnaissance, investigation, open source intelligence">
+    <meta name="author" content="gamingextra">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="OSINT Bot - Intelligence at Your Fingertips">
+    <meta property="og:description" content="30+ powerful OSINT modules for Telegram. IP lookup, domain recon, username search, breach monitoring, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/logo.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OSINT Bot - Intelligence at Your Fingertips">
+    <meta name="twitter:description" content="30+ powerful OSINT modules for Telegram.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Matrix Canvas Background -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="assets/logo.png" alt="OSINT Bot" width="36" height="36">
+                <span>OSINT<span class="accent">Bot</span></span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="#features">Features</a>
+                <a href="#modules">Modules</a>
+                <a href="#commands">Commands</a>
+                <a href="#security">Security</a>
+                <a href="#deploy">Deploy</a>
+                <a href="https://github.com/gamingextra/osint-bot" class="nav-cta" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Open Source &middot; MIT License &middot; v2.0
+            </div>
+            <h1 class="hero-title">
+                <span class="hero-line" data-animate="fade-up" data-delay="0">Intelligence</span>
+                <span class="hero-line" data-animate="fade-up" data-delay="100">at Your <span class="gradient-text">Fingertips</span></span>
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                A comprehensive <strong>Open Source Intelligence</strong> toolkit for Telegram.
+                <br>30+ powerful modules for investigations, reconnaissance, and security research.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="300">
+                <a href="https://t.me/" class="btn btn-primary" target="_blank" rel="noopener">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Launch Bot
+                </a>
+                <a href="https://github.com/gamingextra/osint-bot" class="btn btn-secondary" target="_blank" rel="noopener">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    View Source
+                </a>
+            </div>
+            <div class="hero-stats" data-animate="fade-up" data-delay="400">
+                <div class="stat">
+                    <span class="stat-number" data-count="30">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Commands</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="6">0</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="10">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">API Integrations</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="30">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Platforms</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-terminal" data-animate="fade-left" data-delay="500">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <span class="terminal-title">OSINT Bot &mdash; Telegram</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <div class="terminal-line">$ python main.py</div>
+                <div class="terminal-line output">[INFO] OSINT Investigation Bot - Starting</div>
+                <div class="terminal-line output">[INFO] Database initialized.</div>
+                <div class="terminal-line output">[INFO] Proxy pool loaded: 3 proxies</div>
+                <div class="terminal-line output">[INFO] All handlers registered.</div>
+                <div class="terminal-line output">[INFO] Bot is running. Press Ctrl+C to stop.</div>
+                <div class="terminal-line cursor-line">$&nbsp;<span class="cursor"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Why OSINT Bot?</span>
+                <h2 class="section-title">Everything You Need for<br><span class="gradient-text">Intelligence Gathering</span></h2>
+                <p class="section-desc">Purpose-built for ethical security research, CTF competitions, and authorized investigations.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-animate="fade-up" data-delay="0">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    </div>
+                    <h3>Inline Button UI</h3>
+                    <p>Navigate all 30+ commands through a clean, intuitive inline keyboard interface. No complex commands to memorize &mdash; just tap and explore.</p>
+                </div>
+                <div class="feature-card" data-animate="fade-up" data-delay="100">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                    </div>
+                    <h3>Cross-Platform Search</h3>
+                    <p>Search usernames across 30+ platforms including GitHub, Reddit, X, Instagram, TikTok, YouTube, Facebook, LinkedIn, and Steam.</p>
+                </div>
+                <div class="feature-card" data-animate="fade-up" data-delay="200">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>Built-in rate limiting, input sanitization, and audit logging. No sensitive data stored. All queries logged for accountability.</p>
+                </div>
+                <div class="feature-card" data-animate="fade-up" data-delay="300">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+                    </div>
+                    <h3>Proxy Rotation</h3>
+                    <p>Built-in proxy manager with sequential, random, and failover rotation modes. Supports HTTP, HTTPS, SOCKS4, and SOCKS5 proxies.</p>
+                </div>
+                <div class="feature-card" data-animate="fade-up" data-delay="400">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>Lightweight & Fast</h3>
+                    <p>Minimal dependencies, async architecture, and smart caching ensure rapid responses. Deploy anywhere: VPS, Docker, Heroku, or HuggingFace Spaces.</p>
+                </div>
+                <div class="feature-card" data-animate="fade-up" data-delay="500">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+                    </div>
+                    <h3>Easy to Extend</h3>
+                    <p>Modular handler architecture makes it trivial to add new modules. Clean separation between API clients, handlers, and utilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="section section-alt">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Modules</span>
+                <h2 class="section-title">30+ Powerful<br><span class="gradient-text">Investigation Modules</span></h2>
+                <p class="section-desc">Organized into 6 categories covering every aspect of OSINT and security research.</p>
+            </div>
+            <div class="modules-grid">
+                <!-- OSINT Investigation Tools -->
+                <div class="module-card category-osint" data-animate="fade-up" data-delay="0">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        </div>
+                        <div>
+                            <h3>OSINT Investigation</h3>
+                            <span class="module-count">11 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/ip</code> IP geolocation & abuse intel</div>
+                        <div class="cmd-chip"><code>/domain</code> DNS, WHOIS & VirusTotal</div>
+                        <div class="cmd-chip"><code>/user</code> Username on 30+ platforms</div>
+                        <div class="cmd-chip"><code>/social</code> Social media deep lookup</div>
+                        <div class="cmd-chip"><code>/malware</code> Hash analysis (VirusTotal)</div>
+                        <div class="cmd-chip"><code>/email</code> Email OSINT & validation</div>
+                        <div class="cmd-chip"><code>/emailrecon</code> Deep email recon</div>
+                        <div class="cmd-chip"><code>/breach</code> Data breach checker</div>
+                        <div class="cmd-chip"><code>/phone</code> Phone reconnaissance</div>
+                        <div class="cmd-chip"><code>/number</code> Number analysis</div>
+                        <div class="cmd-chip"><code>/dork</code> Google dork generator</div>
+                    </div>
+                </div>
+
+                <!-- Image Intelligence -->
+                <div class="module-card category-image" data-animate="fade-up" data-delay="100">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        </div>
+                        <div>
+                            <h3>Image Intelligence</h3>
+                            <span class="module-count">3 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/reverse</code> Reverse image search</div>
+                        <div class="cmd-chip"><code>/face</code> Face detection & analysis</div>
+                        <div class="cmd-chip"><code>/meta</code> EXIF metadata extractor</div>
+                    </div>
+                </div>
+
+                <!-- Advanced Security -->
+                <div class="module-card category-security" data-animate="fade-up" data-delay="200">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Advanced Security</h3>
+                            <span class="module-count">5 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/vuln</code> CVE vulnerability scanner</div>
+                        <div class="cmd-chip"><code>/nuclei</code> Template vuln scanner</div>
+                        <div class="cmd-chip"><code>/darkweb</code> Breach monitor</div>
+                        <div class="cmd-chip"><code>/news</code> Cybersecurity feed</div>
+                        <div class="cmd-chip"><code>/github</code> Repo tracker & scanner</div>
+                    </div>
+                </div>
+
+                <!-- CTF & Developer Tools -->
+                <div class="module-card category-ctf" data-animate="fade-up" data-delay="300">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <div>
+                            <h3>CTF & Developer Tools</h3>
+                            <span class="module-count">3 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/password</code> Secure password generator</div>
+                        <div class="cmd-chip"><code>/run</code> Sandboxed code executor</div>
+                        <div class="cmd-chip"><code>/encode</code> Hash & encoding tool</div>
+                    </div>
+                </div>
+
+                <!-- Network Reconnaissance -->
+                <div class="module-card category-network" data-animate="fade-up" data-delay="400">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Network Reconnaissance</h3>
+                            <span class="module-count">4 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/subdomain</code> Subdomain enumeration</div>
+                        <div class="cmd-chip"><code>/dns</code> Full DNS recon (10 types)</div>
+                        <div class="cmd-chip"><code>/whois</code> WHOIS lookup</div>
+                        <div class="cmd-chip"><code>/port</code> Port scanner</div>
+                    </div>
+                </div>
+
+                <!-- Utilities -->
+                <div class="module-card category-util" data-animate="fade-up" data-delay="500">
+                    <div class="module-header">
+                        <div class="module-icon-wrap">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Utilities</h3>
+                            <span class="module-count">4 modules</span>
+                        </div>
+                    </div>
+                    <div class="module-commands">
+                        <div class="cmd-chip"><code>/urlscan</code> URL safety analyzer</div>
+                        <div class="cmd-chip"><code>/qr</code> QR code generator</div>
+                        <div class="cmd-chip"><code>/proxy</code> Proxy manager</div>
+                        <div class="cmd-chip"><code>/stats</code> Usage statistics</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Showcase -->
+    <section id="commands" class="section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Quick Start</span>
+                <h2 class="section-title">Start Investigating<br><span class="gradient-text">in Seconds</span></h2>
+                <p class="section-desc">Simply send a command to the bot and get instant results. All commands use inline buttons for easy interaction.</p>
+            </div>
+            <div class="showcase-grid">
+                <div class="showcase-card" data-animate="fade-up" data-delay="0">
+                    <div class="showcase-example">
+                        <div class="example-prompt"><span class="prompt-user">You</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg"><code>/ip 8.8.8.8</code></div>
+                    </div>
+                    <div class="showcase-response">
+                        <div class="example-prompt"><span class="prompt-bot">OSINT Bot</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg bot-msg">
+                            <strong>IP Intelligence Report</strong><br><br>
+                            IP: <code>8.8.8.8</code><br>
+                            Location: Mountain View, California<br>
+                            ISP: Google LLC<br>
+                            Org: Google Public DNS<br>
+                            Abuse Score: <span style="color:#00ff88">Low (0%)</span><br>
+                            Open Ports: 53 (DNS)
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-card" data-animate="fade-up" data-delay="100">
+                    <div class="showcase-example">
+                        <div class="example-prompt"><span class="prompt-user">You</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg"><code>/user sherlock</code></div>
+                    </div>
+                    <div class="showcase-response">
+                        <div class="example-prompt"><span class="prompt-bot">OSINT Bot</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg bot-msg">
+                            <strong>Username Results</strong><br><br>
+                            <span style="color:#00ff88">&#10004; GitHub</span> &mdash; github.com/sherlock<br>
+                            <span style="color:#00ff88">&#10004; Reddit</span> &mdash; reddit.com/user/sherlock<br>
+                            <span style="color:#ff4444">&#10008; TikTok</span> &mdash; Not found<br>
+                            <span style="color:#00ff88">&#10004; YouTube</span> &mdash; youtube.com/@sherlock<br>
+                            <span style="color:#ff4444">&#10008; Instagram</span> &mdash; Not found<br>
+                            Found on <strong>18/30</strong> platforms
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-card" data-animate="fade-up" data-delay="200">
+                    <div class="showcase-example">
+                        <div class="example-prompt"><span class="prompt-user">You</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg"><code>/vuln CVE-2024-3094</code></div>
+                    </div>
+                    <div class="showcase-response">
+                        <div class="example-prompt"><span class="prompt-bot">OSINT Bot</span><span class="prompt-time">just now</span></div>
+                        <div class="example-msg bot-msg">
+                            <strong>Vulnerability Report</strong><br><br>
+                            CVE: <code>CVE-2024-3094</code><br>
+                            Severity: <span style="color:#ff4444">CRITICAL (10.0)</span><br>
+                            Product: xz utils<br>
+                            Description: Malicious backdoor in xz liblzma<br>
+                            Published: 2024-03-29
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="section section-alt">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Trust & Safety</span>
+                <h2 class="section-title">Built with<br><span class="gradient-text">Security in Mind</span></h2>
+                <p class="section-desc">Every layer of the bot is designed with security best practices.</p>
+            </div>
+            <div class="security-grid">
+                <div class="security-item" data-animate="fade-up" data-delay="0">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Input Validation</h3>
+                        <p>Every command input is sanitized and validated before processing. No injection attacks possible.</p>
+                    </div>
+                </div>
+                <div class="security-item" data-animate="fade-up" data-delay="100">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Rate Limiting</h3>
+                        <p>Sliding-window rate limiting (10 req/60s per user) prevents abuse and API quota exhaustion.</p>
+                    </div>
+                </div>
+                <div class="security-item" data-animate="fade-up" data-delay="200">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Audit Logging</h3>
+                        <p>All queries are logged to SQLite with timestamps for accountability. Passwords and sensitive data are never logged.</p>
+                    </div>
+                </div>
+                <div class="security-item" data-animate="fade-up" data-delay="300">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Sandboxed Execution</h3>
+                        <p>Code runner uses blacklisted commands, timeout limits, and output size restrictions to prevent misuse.</p>
+                    </div>
+                </div>
+                <div class="security-item" data-animate="fade-up" data-delay="400">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Environment Secrets</h3>
+                        <p>All API keys and tokens stored as environment variables. No hardcoded credentials in source code.</p>
+                    </div>
+                </div>
+                <div class="security-item" data-animate="fade-up" data-delay="500">
+                    <div class="security-check">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <h3>Ethical Disclaimers</h3>
+                        <p>Educational disclaimers present throughout the bot. Designed for authorized security research only.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deploy Section -->
+    <section id="deploy" class="section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Deployment</span>
+                <h2 class="section-title">Deploy in<br><span class="gradient-text">Minutes</span></h2>
+                <p class="section-desc">Multiple deployment options. Pick what works best for you.</p>
+            </div>
+            <div class="deploy-grid">
+                <div class="deploy-card" data-animate="fade-up" data-delay="0">
+                    <div class="deploy-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+                    </div>
+                    <h3>VPS / Bare Metal</h3>
+                    <div class="deploy-code">
+                        <code>git clone https://github.com/gamingextra/osint-bot.git</code><br>
+                        <code>cd osint-bot && pip install -r requirements.txt</code><br>
+                        <code>cp .env.example .env && nano .env</code><br>
+                        <code>python main.py</code>
+                    </div>
+                </div>
+                <div class="deploy-card" data-animate="fade-up" data-delay="100">
+                    <div class="deploy-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                    </div>
+                    <h3>Docker</h3>
+                    <div class="deploy-code">
+                        <code>docker build -t osint-bot .</code><br>
+                        <code>docker run -d --env-file .env osint-bot</code>
+                    </div>
+                    <span class="deploy-tag">Recommended</span>
+                </div>
+                <div class="deploy-card" data-animate="fade-up" data-delay="200">
+                    <div class="deploy-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>Cloud Platforms</h3>
+                    <div class="deploy-code">
+                        <code>Heroku / Railway / Fly.io / Render</code><br>
+                        <code>HuggingFace Spaces (Docker SDK)</code><br>
+                        <code>Just connect repo and set env vars</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section id="tech" class="section section-alt">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Architecture</span>
+                <h2 class="section-title">Clean, Modular<br><span class="gradient-text">Architecture</span></h2>
+            </div>
+            <div class="arch-diagram" data-animate="fade-up">
+                <div class="arch-layer">
+                    <div class="arch-label">Interface Layer</div>
+                    <div class="arch-boxes">
+                        <div class="arch-box">Telegram Bot API</div>
+                        <div class="arch-box">Inline Keyboards</div>
+                        <div class="arch-box">Callback Queries</div>
+                    </div>
+                </div>
+                <div class="arch-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+                <div class="arch-layer">
+                    <div class="arch-label">Handler Layer (22+ modules)</div>
+                    <div class="arch-boxes">
+                        <div class="arch-box">OSINT Handlers</div>
+                        <div class="arch-box">Security Handlers</div>
+                        <div class="arch-box">Utility Handlers</div>
+                    </div>
+                </div>
+                <div class="arch-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+                <div class="arch-layer">
+                    <div class="arch-label">Service Layer</div>
+                    <div class="arch-boxes">
+                        <div class="arch-box">API Clients</div>
+                        <div class="arch-box">Proxy Manager</div>
+                        <div class="arch-box">Rate Limiter</div>
+                    </div>
+                </div>
+                <div class="arch-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+                <div class="arch-layer">
+                    <div class="arch-label">Data Layer</div>
+                    <div class="arch-boxes">
+                        <div class="arch-box">SQLite Database</div>
+                        <div class="arch-box">Config / Env</div>
+                        <div class="arch-box">Logger</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tech-badges" data-animate="fade-up" data-delay="200">
+                <span class="tech-badge">Python 3.10+</span>
+                <span class="tech-badge">python-telegram-bot</span>
+                <span class="tech-badge">aiohttp</span>
+                <span class="tech-badge">dnspython</span>
+                <span class="tech-badge">Pillow</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">Docker</span>
+                <span class="tech-badge">Nuclei API</span>
+                <span class="tech-badge">Async/Await</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="section cta-section">
+        <div class="container">
+            <div class="cta-content" data-animate="fade-up">
+                <h2>Ready to Start Investigating?</h2>
+                <p>Deploy your own OSINT bot in minutes. Open source, well documented, and ready to go.</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/gamingextra/osint-bot" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        Star on GitHub
+                    </a>
+                    <a href="https://github.com/gamingextra/osint-bot#readme" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+                        Read Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="OSINT Bot" width="32" height="32">
+                        <span>OSINT<span class="accent">Bot</span></span>
+                    </div>
+                    <p>A comprehensive OSINT toolkit for Telegram. Built for cybersecurity education.</p>
+                </div>
+                <div class="footer-links-grid">
+                    <div class="footer-col">
+                        <h4>Project</h4>
+                        <a href="https://github.com/gamingextra/osint-bot" target="_blank" rel="noopener">GitHub</a>
+                        <a href="https://github.com/gamingextra/osint-bot/issues" target="_blank" rel="noopener">Issues</a>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Resources</h4>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/README.md" target="_blank" rel="noopener">Documentation</a>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/deployment.md" target="_blank" rel="noopener">Deployment Guide</a>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/SECURITY.md" target="_blank" rel="noopener">Security Policy</a>
+                        <a href="https://github.com/gamingextra/osint-bot/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener">Code of Conduct</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 OSINT Bot Contributors. MIT License. For educational purposes only.</p>
+                <p class="footer-disclaimer">This tool is designed for educational and authorized security research only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button id="scroll-top" aria-label="Scroll to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

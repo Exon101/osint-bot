@@ -1,0 +1,8 @@
+# Heroku Container Registry deployment config
+# Used with: heroku container:push
+build:
+  docker:
+    web: Dockerfile
+
+run:
+  worker: python main.py

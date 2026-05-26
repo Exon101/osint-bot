@@ -1,0 +1,66 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*.pyo
+*.so
+.Python
+venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation & Media
+*.md
+LICENSE
+screenshots/
+docs/
+
+# Docker (not needed inside image)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Distribution
+dist/
+build/
+*.egg-info/
+*.tar.gz
+
+# Test
+tests/
+Makefile
+Procfile
+runtime.txt

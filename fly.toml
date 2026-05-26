@@ -1,0 +1,17 @@
+# fly.toml — Fly.io deployment configuration
+
+app = "osint-bot"
+primary_region = "sin"
+
+[build]
+  builder = "paketobuildpacks/builder-jammy-base"
+
+[env]
+  PORT = "8080"
+  PYTHONUNBUFFERED = "1"
+  PYTHONDONTWRITEBYTECODE = "1"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1

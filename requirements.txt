@@ -1,0 +1,24 @@
+# ===========================================
+# OSINT Investigation Bot — Dependencies
+# ===========================================
+# Core
+python-telegram-bot==21.7
+aiohttp==3.9.5
+httpx==0.27.0
+python-dotenv==1.0.1
+
+# DNS & Network
+dnspython==2.6.1
+python-whois==0.9.4
+
+# Image & Metadata
+Pillow==10.4.0
+exifread==3.0.0
+
+# Proxy Support (SOCKS4/5, HTTP/HTTPS)
+aiohttp-socks==0.8.0
+
+# ===========================================
+# Optional (uncomment if needed)
+# ===========================================
+# feedparser==6.0.11   # RSS feeds (fallback if manual parsing fails)

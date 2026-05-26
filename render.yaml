@@ -1,0 +1,26 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Place this file in your repo root to enable auto-discovery on Render
+
+services:
+  - type: worker
+    name: osint-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: IPINFO_API_KEY
+        sync: false
+      - key: VIRUSTOTAL_API_KEY
+        sync: false
+      - key: SHODAN_API_KEY
+        sync: false
+      - key: HUNTER_API_KEY
+        sync: false
+      - key: ABUSEIPDB_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
