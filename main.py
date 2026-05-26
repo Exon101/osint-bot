@@ -247,48 +247,26 @@ def main() -> None:
         sys.exit(1)
 
     # Build application
+    api_url = os.getenv("TELEGRAM_API_URL", "").rstrip("/")
+
+    # ── httpx + proxy token encoding ──────────────────
+    # When TELEGRAM_API_URL is set (Cloudflare Worker proxy),
+    # httpx interprets the colon in bot tokens as a host:port
+    # separator and raises InvalidURL.  The fix is to percent-
+    # encode the colon *in the token itself* so PTB builds URLs
+    # like  …/bot8875460717%3AAFF_…/getMe  instead of
+    #          …/bot8875460717:AAFF_…/getMe
+    # The Cloudflare Worker already runs decodeURIComponent(path)
+    # so it restores the real token before forwarding to Telegram.
+    if api_url:
+        token = token.replace(":", "%3A")
+        logger.info("Using proxy — token colon encoded for httpx compatibility")
+
     builder = Application.builder().token(token)
 
-    # If TELEGRAM_API_URL is set, route ALL Telegram API calls through
-    # a proxy (e.g. Cloudflare Worker).  Required on HF Spaces which
-    # blocks direct access to api.telegram.org.
-    api_url = os.getenv("TELEGRAM_API_URL", "").rstrip("/")
     if api_url:
         logger.info("Using custom Telegram API URL: %s", api_url)
-
-        # httpx treats the colon in bot tokens (e.g. 8875460717:AAFF_...)
-        # as a port separator and raises InvalidURL.  We subclass
-        # HTTPXRequest and URL-encode the colon to %3A before httpx
-        # ever sees the URL.  The Cloudflare Worker decodes it back.
-        from telegram.request import HTTPXRequest
-
-        class ProxyHTTPXRequest(HTTPXRequest):
-            """HTTPXRequest that percent-encodes the colon in the bot token."""
-
-            async def do_request(self, url, *args, **kwargs):
-                # URL format: {base}/bot<token>/<method>[?params]
-                # Encode the colon inside the token: bot123:ABC → bot123%3AABC
-                idx = url.find("/bot")
-                if idx != -1:
-                    after = url[idx + 4:]          # skip "/bot"
-                    slash = after.find("/")
-                    if slash != -1:
-                        url = (
-                            url[: idx + 4]
-                            + after[:slash].replace(":", "%3A")
-                            + after[slash:]
-                        )
-                return await super().do_request(url, *args, **kwargs)
-
-        request = ProxyHTTPXRequest(
-            connect_timeout=30, read_timeout=60, write_timeout=60,
-        )
-        builder = (
-            builder
-            .base_url(api_url)
-            .base_file_url(f"{api_url}/file")
-            .request(request)
-        )
+        builder = builder.base_url(api_url).base_file_url(f"{api_url}/file")
 
     application = (
         builder
