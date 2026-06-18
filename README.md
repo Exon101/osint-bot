@@ -3,7 +3,7 @@
 > A comprehensive Open Source Intelligence (OSINT) aggregation bot for Telegram with **30+ powerful modules**.
 > Built as an educational cybersecurity project demonstrating ethical intelligence gathering techniques.
 >
-> 🌐 **Live Demo:** [gamingextra.github.io/osint-bot](https://gamingextra.github.io/osint-bot)
+> 🌐 **Live Demo:** [https://exon101.github.io/osint-bot](https://exon101.github.io/osint-bot/)
 
 ## ✨ Features Overview
 
